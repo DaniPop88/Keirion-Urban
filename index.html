@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Keirion Urban Boutique | Your Style, Your Statement</title>
+  <meta name="description" content="Keirion Urban Boutique: Trendy urban fashion, apparel, accessories, and essentials for Filipinos. Located in Parañaque City. Shop now!">
+  <link rel="icon" type="image/png" href="image/FAVICON.png">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Lato:400,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a2732;
+      --accent: #ffb700;
+      --bg: #f7f7f7;
+      --text: #232323;
+      --header: #eaeaea;
+      --card: #ffffff;
+      --border: #dedede;
+      --button-bg: #ffb700;
+      --button-text: #1a2732;
+      --header-z: 9999;
+      --cart-btn-size: 60px;
+      --cart-popup-width: 90vw;
+      --cart-popup-max-width: 380px;
+      --cart-popup-padding: 2rem;
+    }
+    body {
+      margin: 0;
+      font-family: 'Lato', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: var(--header);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: var(--header-z);
+      transition: box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(30,39,50,0.07);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .logo img {
+      height: 48px;
+      width: auto;
+    }
+    .nav {
+      display: flex;
+      gap: 1.5rem;
+      transition: max-height 0.3s, opacity 0.3s;
+      align-items: center;
+    }
+    .nav a {
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 700;
+      font-family: 'Montserrat', Arial, sans-serif;
+      transition: color .2s;
+    }
+    .nav a:hover {
+      color: var(--accent);
+    }
+    .burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 42px;
+      height: 42px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: calc(var(--header-z) + 1);
+    }
+    .burger span {
+      display: block;
+      width: 28px;
+      height: 4px;
+      margin: 4px 0;
+      background: var(--primary);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .burger.open span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .burger.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .burger.open span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+    @media (max-width: 900px) {
+      main {
+        width: 98%;
+      }
+      .products-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+    }
+    @media (max-width: 600px) {
+      header {
+        flex-direction: row;
+        gap: 0.7rem;
+        padding: 1rem 1rem;
+      }
+      .logo {
+        flex: 1;
+      }
+      .burger {
+        display: flex;
+      }
+      .nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--header);
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem 0;
+        box-shadow: 0 2px 10px rgba(30,39,50,0.12);
+        border-bottom: 1px solid var(--border);
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        visibility: hidden;
+        transition: max-height 0.3s, opacity 0.3s;
+      }
+      .nav.open {
+        max-height: 300px;
+        opacity: 1;
+        visibility: visible;
+      }
+      .nav a {
+        font-size: 1.1rem;
+        padding: 0.7rem 0;
+        color: var(--primary);
+      }
+      .nav a:last-child {
+        border-bottom: none;
+      }
+    }
+    main {
+      flex: 1;
+      padding: 2rem 0;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 95%;
+    }
+    .hero {
+      background: var(--primary);
+      color: #fff;
+      border-radius: 10px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .hero h1 {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 2.6rem;
+      margin-bottom: 0.5rem;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .hero .tagline {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .products-section {
+      margin-bottom: 2rem;
+    }
+    .products-section h2 {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      color: var(--primary);
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+    .product-card {
+      background: var(--card);
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(30,39,50,0.09);
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    .product-card img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin-bottom: 0.8rem;
+      background: #ececec;
+      border-radius: 8px;
+    }
+    .product-card .p-name {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      color: var(--primary);
+    }
+    .product-card .p-desc {
+      font-size: 0.96rem;
+      margin-bottom: 0.4rem;
+      text-align: center;
+    }
+    .product-card .p-stock {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 0.4rem;
+    }
+    .product-card .p-price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.7rem;
+    }
+    .product-card button {
+      background: var(--button-bg);
+      color: var(--button-text);
+      font-weight: 700;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 1px 4px rgba(255,183,0,0.07);
+      transition: background .25s;
+    }
+    .product-card button:hover {
+      background: #ffc94d;
+    }
+    .cart-section {
+      background: var(--card);
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(30,39,50,0.08);
+      padding: 1.2rem;
+      max-width: 400px;
+      margin: 0 auto 2rem;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    .cart-section h3 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--primary);
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.2rem;
+    }
+    .cart-list {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 1rem;
+    }
+    .cart-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.97rem;
+    }
+    .cart-list li:last-child {
+      border-bottom: none;
+    }
+    .cart-total {
+      text-align: right;
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 1.04rem;
+      margin-bottom: 1rem;
+    }
+    .cart-actions {
+      text-align: center;
+    }
+    .cart-actions button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 0.5rem 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background .2s;
+      margin-top: 0.3rem;
+    }
+    .cart-actions button:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    .about-section, .contact-section, .faq-section, .testimonials-section, .business-info-section {
+      background: var(--card);
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(30,39,50,0.08);
+      padding: 1.7rem;
+      margin-bottom: 1.6rem;
+      border: 1px solid var(--border);
+    }
+    .about-section h2, .contact-section h2, .faq-section h2, .testimonials-section h2, .business-info-section h2 {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.7rem;
+      color: var(--primary);
+    }
+    .about-section ul {
+      margin: 0.6rem 0 0 1.2rem;
+      padding: 0;
+      font-size: 0.97rem;
+    }
+    .contact-details {
+      font-size: 1rem;
+      margin-bottom: 0.7rem;
+    }
+    .contact-details span {
+      display: block;
+    }
+    .faq-list {
+      list-style: none;
+      padding: 0;
+    }
+    .faq-list li {
+      margin-bottom: 0.8rem;
+    }
+    .faq-q {
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .faq-a {
+      margin-left: 0.5rem;
+      display: inline;
+    }
+    .testimonials-list {
+      list-style: none;
+      padding: 0;
+    }
+    .testimonials-list li {
+      margin-bottom: 0.7rem;
+      font-style: italic;
+    }
+    .business-info-section table {
+      width: 100%;
+      font-size: 0.97rem;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+    }
+    .business-info-section td {
+      padding: 0.4rem 0.7rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .business-info-section tr:last-child td {
+      border-bottom: none;
+    }
+    /* Floating cart button styles */
+    #cart-fab {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      width: var(--cart-btn-size);
+      height: var(--cart-btn-size);
+      background: var(--accent);
+      color: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 3px 12px rgba(30,39,50,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      z-index: 10010;
+      transition: background 0.2s;
+    }
+    #cart-fab:hover {
+      background: #ffc94d;
+    }
+    #cart-fab-count {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    /* Cart popup modal styles */
+    #cart-popup-bg {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(30,39,50,0.16);
+      z-index: 10020;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.25s;
+    }
+    #cart-popup-bg.show {
+      display: flex;
+    }
+    #cart-popup {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(30,39,50,0.18);
+      padding: var(--cart-popup-padding);
+      max-width: var(--cart-popup-max-width);
+      width: var(--cart-popup-width);
+      margin: 0 20px;
+      text-align: center;
+      position: relative;
+      animation: popupCartIn .3s;
+    }
+    @keyframes popupCartIn {
+      from { transform: scale(0.90) translateY(30px); opacity:0; }
+      to { transform: scale(1) translateY(0); opacity:1; }
+    }
+    #cart-popup h4 {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    #cart-popup .cart-list {
+      margin-bottom: 1rem;
+      padding: 0;
+    }
+    #cart-popup .cart-list li {
+      font-size: 1rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #cart-popup .cart-list li:last-child {
+      border-bottom: none;
+    }
+    #cart-popup .cart-total {
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      text-align: right;
+    }
+    #cart-popup .cart-actions {
+      text-align: center;
+    }
+    #cart-popup .cart-actions button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 0.5rem 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background .2s;
+      margin: 0.3rem 0.1rem;
+    }
+    #cart-popup .cart-actions button:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    #cart-popup-close {
+      position: absolute;
+      top: 13px;
+      right: 17px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #888;
+      cursor: pointer;
+      font-weight: bold;
+      transition: color 0.2s;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    #cart-popup-close:hover {
+      color: var(--accent);
+      background: #eee;
+    }
+    footer {
+      background: var(--primary);
+      color: #fff;
+      text-align: center;
+      padding: 1.2rem 0 0.6rem 0;
+      font-size: 0.96rem;
+      margin-top: auto;
+    }
+    .footer-links {
+      margin-bottom: 0.7rem;
+    }
+    .footer-links a {
+      color: #fff;
+      text-decoration: underline;
+      margin: 0 0.9rem;
+      font-size: 1rem;
+      transition: color .2s;
+    }
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+      .cart-section, .about-section, .contact-section, .faq-section, .testimonials-section, .business-info-section {
+        padding: 1rem;
+      }
+      #cart-popup {
+        padding: 1.2rem;
+        margin: 0 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="header">
+    <div class="logo">
+      <img src="image/LOGO.png" alt="Keirion Urban Boutique Logo">
+      <span style="font-family:'Montserrat';font-weight:700;font-size:1.25rem;color:var(--primary);">Keirion Urban Boutique</span>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="main-navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav class="nav" id="main-navigation">
+      <a href="#products">Shop</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <h1>Your Style, Your Statement</h1>
+      <p>Welcome to Keirion Urban Boutique, your go-to destination for trendy urban fashion and everyday essentials. Located in the heart of Parañaque City, we bring together carefully curated apparel, accessories, and lifestyle pieces designed to fit your unique style.</p>
+      <p class="tagline">✨ Affordable. Stylish. Authentic. ✨</p>
+      <p>Visit us today or shop conveniently through our online platforms.</p>
+    </section>
+    <section id="products" class="products-section">
+      <h2>Featured Products</h2>
+      <div class="products-grid">
+        <div class="product-card" data-id="1">
+          <img src="https://via.placeholder.com/120x120?text=Product+1" alt="Product 1">
+          <span class="p-name">Urban Tee - Black</span>
+          <span class="p-desc">Stylish and comfortable cotton tee for daily wear.</span>
+          <span class="p-stock">Qty: 12</span>
+          <span class="p-price">₱349.00</span>
+          <button onclick="addToCart(1)">Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="2">
+          <img src="https://via.placeholder.com/120x120?text=Product+2" alt="Product 2">
+          <span class="p-name">Classic Canvas Cap</span>
+          <span class="p-desc">Perfect for sunny days and urban adventures.</span>
+          <span class="p-stock">Qty: 7</span>
+          <span class="p-price">₱229.00</span>
+          <button onclick="addToCart(2)">Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="3">
+          <img src="https://via.placeholder.com/120x120?text=Product+3" alt="Product 3">
+          <span class="p-name">Slim-Fit Joggers</span>
+          <span class="p-desc">Move freely in these comfortable joggers.</span>
+          <span class="p-stock">Qty: 10</span>
+          <span class="p-price">₱499.00</span>
+          <button onclick="addToCart(3)">Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="4">
+          <img src="https://via.placeholder.com/120x120?text=Product+4" alt="Product 4">
+          <span class="p-name">Street Backpack</span>
+          <span class="p-desc">Spacious and durable for everyday use.</span>
+          <span class="p-stock">Qty: 5</span>
+          <span class="p-price">₱899.00</span>
+          <button onclick="addToCart(4)">Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="5">
+          <img src="https://via.placeholder.com/120x120?text=Product+5" alt="Product 5">
+          <span class="p-name">Minimalist Watch</span>
+          <span class="p-desc">Sleek and modern watch for every occasion.</span>
+          <span class="p-stock">Qty: 8</span>
+          <span class="p-price">₱799.00</span>
+          <button onclick="addToCart(5)">Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="6">
+          <img src="https://via.placeholder.com/120x120?text=Product+6" alt="Product 6">
+          <span class="p-name">Denim Jacket</span>
+          <span class="p-desc">Classic denim with a contemporary fit.</span>
+          <span class="p-stock">Qty: 4</span>
+          <span class="p-price">₱1,199.00</span>
+          <button onclick="addToCart(6)">Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="7">
+          <img src="https://via.placeholder.com/120x120?text=Product+7" alt="Product 7">
+          <span class="p-name">Bamboo Sunglasses</span>
+          <span class="p-desc">Eco-friendly and stylish eye protection.</span>
+          <span class="p-stock">Qty: 9</span>
+          <span class="p-price">₱399.00</span>
+          <button onclick="addToCart(7)">Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="8">
+          <img src="https://via.placeholder.com/120x120?text=Product+8" alt="Product 8">
+          <span class="p-name">Canvas Tote Bag</span>
+          <span class="p-desc">Durable bag for everyday essentials.</span>
+          <span class="p-stock">Qty: 11</span>
+          <span class="p-price">₱299.00</span>
+          <button onclick="addToCart(8)">Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="9">
+          <img src="https://via.placeholder.com/120x120?text=Product+9" alt="Product 9">
+          <span class="p-name">Leather Wallet</span>
+          <span class="p-desc">Premium genuine leather, slim design.</span>
+          <span class="p-stock">Qty: 6</span>
+          <span class="p-price">₱549.00</span>
+          <button onclick="addToCart(9)">Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="10">
+          <img src="https://via.placeholder.com/120x120?text=Product+10" alt="Product 10">
+          <span class="p-name">Sporty Sneakers</span>
+          <span class="p-desc">Comfortable fit for active lifestyles.</span>
+          <span class="p-stock">Qty: 15</span>
+          <span class="p-price">₱999.00</span>
+          <button onclick="addToCart(10)">Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="11">
+          <img src="https://via.placeholder.com/120x120?text=Product+11" alt="Product 11">
+          <span class="p-name">Graphic Hoodie</span>
+          <span class="p-desc">Bold design, cozy fabric for cooler days.</span>
+          <span class="p-stock">Qty: 7</span>
+          <span class="p-price">₱699.00</span>
+          <button onclick="addToCart(11)">Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="12">
+          <img src="https://via.placeholder.com/120x120?text=Product+12" alt="Product 12">
+          <span class="p-name">Gold Chain Bracelet</span>
+          <span class="p-desc">Elegant accessory, perfect for gifting.</span>
+          <span class="p-stock">Qty: 3</span>
+          <span class="p-price">₱499.00</span>
+          <button onclick="addToCart(12)">Add to Cart</button>
+        </div>
+      </div>
+    </section>
+    <section class="cart-section" id="cart">
+      <h3>Your Cart</h3>
+      <ul class="cart-list" id="cart-list">
+      </ul>
+      <div class="cart-total" id="cart-total">Total: ₱0.00</div>
+      <div class="cart-actions">
+        <button onclick="checkout()" disabled id="checkout-btn">Checkout</button>
+      </div>
+    </section>
+    <section class="about-section" id="about">
+      <h2>About Us</h2>
+      <p>At Keirion Urban Boutique, fashion isn’t just about clothing—it’s about self-expression. Founded by John Kevin Nocon Hernandez, our boutique was built on the vision of making modern, stylish wear accessible to everyone.</p>
+      <ul>
+        <li><strong>Authenticity</strong> – We source and offer only products we believe in.</li>
+        <li><strong>Affordability</strong> – Fashion shouldn’t break the bank.</li>
+        <li><strong>Community</strong> – We aim to be a trusted fashion hub for Filipinos of all walks of life.</li>
+      </ul>
+      <p>Locally owned and operated in Parañaque City, serving the NCR since our establishment.</p>
+    </section>
+    <section class="contact-section" id="contact">
+      <h2>Contact Us</h2>
+      <div class="contact-details">
+        <span><strong>Address:</strong> 7673 Dr. F C Santos Compound, Barangay San Isidro, Parañaque City, NCR, 1700, Philippines</span>
+        <span><strong>Email:</strong> <a href="mailto:contact@keirionboutique.shop">contact@keirionboutique.shop</a></span>
+        <span><strong>Phone:</strong> <a href="tel:+639274309854">+63 927 430 9854</a></span>
+        <span><strong>Website:</strong> <a href="https://keirionboutique.shop" target="_blank">keirionboutique.shop</a></span>
+      </div>
+      <div><strong>Business Hours:</strong><br>
+        Monday – Saturday: 8:00 AM – 6:00 PM<br>
+        Closed on Sundays & Holidays
+      </div>
+    </section>
+    <section class="faq-section" id="faq">
+      <h2>Frequently Asked Questions</h2>
+      <ul class="faq-list">
+        <li>
+          <span class="faq-q">Q: Do you offer delivery?</span>
+          <span class="faq-a">Yes! We provide nationwide shipping via trusted courier partners.</span>
+        </li>
+        <li>
+          <span class="faq-q">Q: Do you accept returns or exchanges?</span>
+          <span class="faq-a">Items may be returned or exchanged within 7 days provided they are unused and in original condition.</span>
+        </li>
+        <li>
+          <span class="faq-q">Q: How can I pay?</span>
+          <span class="faq-a">We accept cash, GCash, bank transfer, and major credit/debit cards.</span>
+        </li>
+      </ul>
+    </section>
+    <section class="testimonials-section">
+      <h2>Testimonials</h2>
+      <ul class="testimonials-list">
+        <li>"I love shopping here! The clothes are stylish yet affordable. Customer service is excellent." – Andrea, Quezon City</li>
+        <li>"Perfect place to grab urban wear. Always updated with new collections." – Marco, Makati</li>
+      </ul>
+    </section>
+    <section class="business-info-section">
+      <h2>Business Information</h2>
+      <table>
+        <tr>
+          <td>Registered Business Name:</td>
+          <td>Keirion Urban Boutique</td>
+        </tr>
+        <tr>
+          <td>TIN:</td>
+          <td>294-610-857-000</td>
+        </tr>
+        <tr>
+          <td>Address:</td>
+          <td>7673 Dr. F C Santos Compound, Brgy. San Isidro, Parañaque City, NCR, 1700, Philippines</td>
+        </tr>
+      </table>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-links">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="refund-policy.html">Refund Policy</a>
+    </div>
+    <div>
+      &copy; 2025 Keirion Urban Boutique. All rights reserved.<br>
+      Designed for Meta Business Verification & Philippine urban lifestyle.
+    </div>
+  </footer>
+  <!-- Floating Cart Button -->
+  <button id="cart-fab" aria-label="Open Cart">
+    <span style="font-size:1.7em;line-height:1;">🛒</span>
+    <span id="cart-fab-count" style="display:none;"></span>
+  </button>
+  <!-- Cart Popup Modal -->
+  <div id="cart-popup-bg">
+    <div id="cart-popup">
+      <button id="cart-popup-close" aria-label="Close Cart">&times;</button>
+      <h4>Your Shopping Cart</h4>
+      <ul class="cart-list" id="cart-popup-list"></ul>
+      <div class="cart-total" id="cart-popup-total"></div>
+      <div class="cart-actions">
+        <button onclick="checkout()" id="cart-popup-checkout-btn" disabled>Checkout</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Minimal cart logic for demonstration purposes only
+    const products = [
+      { id: 1, name: 'Urban Tee - Black', price: 349, stock: 12 },
+      { id: 2, name: 'Classic Canvas Cap', price: 229, stock: 7 },
+      { id: 3, name: 'Slim-Fit Joggers', price: 499, stock: 10 },
+      { id: 4, name: 'Street Backpack', price: 899, stock: 5 },
+      { id: 5, name: 'Minimalist Watch', price: 799, stock: 8 },
+      { id: 6, name: 'Denim Jacket', price: 1199, stock: 4 },
+      { id: 7, name: 'Bamboo Sunglasses', price: 399, stock: 9 },
+      { id: 8, name: 'Canvas Tote Bag', price: 299, stock: 11 },
+      { id: 9, name: 'Leather Wallet', price: 549, stock: 6 },
+      { id: 10, name: 'Sporty Sneakers', price: 999, stock: 15 },
+      { id: 11, name: 'Graphic Hoodie', price: 699, stock: 7 },
+      { id: 12, name: 'Gold Chain Bracelet', price: 499, stock: 3 }
+    ];
+    let cart = [];
+
+    function addToCart(id) {
+      const prod = products.find(p => p.id === id);
+      if (!prod) return;
+      const cartItem = cart.find(item => item.id === id);
+      if (cartItem) {
+        if (cartItem.qty < prod.stock) {
+          cartItem.qty += 1;
+        }
+      } else {
+        cart.push({ id: id, name: prod.name, price: prod.price, qty: 1 });
+      }
+      renderCart();
+      renderFabCart();
+      renderPopupCart();
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(item => item.id !== id);
+      renderCart();
+      renderFabCart();
+      renderPopupCart();
+    }
+
+    function renderCart() {
+      const cartList = document.getElementById('cart-list');
+      cartList.innerHTML = '';
+      let total = 0;
+      cart.forEach(item => {
+        total += item.price * item.qty;
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span>${item.name} (x${item.qty})</span>
+          <span>
+            ₱${(item.price * item.qty).toFixed(2)}
+            <button style="margin-left:8px;background:#eee;border:none;color:#c00;padding:2px 7px;border-radius:3px;font-size:0.95em;cursor:pointer;"
+              onclick="removeFromCart(${item.id})" title="Remove">&#10006;</button>
+          </span>
+        `;
+        cartList.appendChild(li);
+      });
+      document.getElementById('cart-total').innerText = `Total: ₱${total.toFixed(2)}`;
+      document.getElementById('checkout-btn').disabled = cart.length === 0;
+    }
+
+    function renderFabCart() {
+      const fabCount = document.getElementById('cart-fab-count');
+      if (cart.length > 0) {
+        let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+        fabCount.textContent = totalQty;
+        fabCount.style.display = "flex";
+      } else {
+        fabCount.textContent = "";
+        fabCount.style.display = "none";
+      }
+    }
+
+    function renderPopupCart() {
+      const popupList = document.getElementById('cart-popup-list');
+      popupList.innerHTML = '';
+      let total = 0;
+      cart.forEach(item => {
+        total += item.price * item.qty;
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span>${item.name} (x${item.qty})</span>
+          <span>
+            ₱${(item.price * item.qty).toFixed(2)}
+            <button style="margin-left:8px;background:#eee;border:none;color:#c00;padding:2px 7px;border-radius:3px;font-size:0.95em;cursor:pointer;"
+              onclick="removeFromCart(${item.id}); event.stopPropagation();" title="Remove">&#10006;</button>
+          </span>
+        `;
+        popupList.appendChild(li);
+      });
+      document.getElementById('cart-popup-total').innerText = `Total: ₱${total.toFixed(2)}`;
+      document.getElementById('cart-popup-checkout-btn').disabled = cart.length === 0;
+    }
+
+    function checkout() {
+      window.location.href = "order-summary.html";
+    }
+
+    // Burger button menu for mobile
+    const burger = document.getElementById('burger');
+    const nav = document.getElementById('main-navigation');
+    burger.addEventListener('click', function() {
+      const isOpen = nav.classList.contains('open');
+      nav.classList.toggle('open', !isOpen);
+      burger.classList.toggle('open', !isOpen);
+      burger.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    Array.from(nav.querySelectorAll('a')).forEach(function(link) {
+      link.addEventListener('click', function() {
+        if (window.innerWidth <= 600) {
+          nav.classList.remove('open');
+          burger.classList.remove('open');
+          burger.setAttribute('aria-expanded', "false");
+        }
+      });
+    });
+
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 600) {
+        nav.classList.remove('open');
+        burger.classList.remove('open');
+        burger.setAttribute('aria-expanded', "false");
+      }
+    });
+
+    // Floating cart button logic
+    const cartFab = document.getElementById('cart-fab');
+    const cartPopupBg = document.getElementById('cart-popup-bg');
+    const cartPopupClose = document.getElementById('cart-popup-close');
+
+    cartFab.addEventListener('click', function() {
+      cartPopupBg.classList.add('show');
+      renderPopupCart();
+      document.body.style.overflow = 'hidden';
+    });
+
+    cartPopupClose.addEventListener('click', function(e) {
+      cartPopupBg.classList.remove('show');
+      document.body.style.overflow = '';
+    });
+
+    cartPopupBg.addEventListener('click', function(e) {
+      if (e.target === cartPopupBg) {
+        cartPopupBg.classList.remove('show');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Render cart & cart fab on load
+    renderCart();
+    renderFabCart();
+    renderPopupCart();
+  </script>
+</body>
+</html>
