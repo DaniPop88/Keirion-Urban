@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Summary | Keirion Urban Boutique</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Review your Keirion Urban Boutique order, confirm details, and finalize your purchase.">
+  <link rel="icon" href="image/FAVICON.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Lato:400,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a2732;
+      --accent: #ffb700;
+      --bg: #f7f7f7;
+      --text: #232323;
+      --header: #eaeaea;
+      --card: #fff;
+      --border: #dedede;
+      --success: #44b78b;
+      --error: #e74c3c;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Lato', Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: var(--header);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .logo img {
+      height: 42px;
+      width: auto;
+      margin-right: 0.5rem;
+    }
+    .logo span {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 1.18rem;
+      color: var(--primary);
+      letter-spacing: 1px;
+    }
+    main {
+      flex: 1;
+      width: 95%;
+      max-width: 650px;
+      margin: 0 auto;
+      padding: 2rem 0 2rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1, h2, h3 {
+      font-family: 'Montserrat', Arial, sans-serif;
+      color: var(--primary);
+    }
+    h1 {
+      font-size: 2.1rem;
+      margin-bottom: 0.6rem;
+      text-align: center;
+    }
+    .summary-card {
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(30,39,50,0.09);
+      border: 1px solid var(--border);
+      padding: 2rem 1.4rem 2rem 1.4rem;
+      margin-bottom: 1.6rem;
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .summary-header {
+      text-align: center;
+      margin-bottom: 1.2rem;
+    }
+    .summary-list {
+      width: 100%;
+      margin-bottom: 1.2rem;
+      padding: 0;
+      list-style: none;
+    }
+    .summary-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 1.02rem;
+    }
+    .summary-list li:last-child {
+      border-bottom: none;
+    }
+    .summary-total {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 1.08rem;
+      margin-bottom: 1.1rem;
+    }
+    .customer-info {
+      width: 100%;
+      margin-bottom: 1.2rem;
+      background: #f4f4f4;
+      border-radius: 7px;
+      padding: 1rem;
+      font-size: 0.98rem;
+      color: var(--primary);
+    }
+    .customer-info div {
+      margin-bottom: 0.5rem;
+    }
+    .customer-info div:last-child {
+      margin-bottom: 0;
+    }
+    .instructions {
+      font-size: 1.02rem;
+      background: #fff9e3;
+      border-radius: 7px;
+      padding: 1rem;
+      margin-bottom: 1.2rem;
+      border: 1px solid #ffe5b7;
+      color: var(--primary);
+      text-align: left;
+    }
+    .confirm-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #confirm-btn {
+      background: var(--accent);
+      color: var(--primary);
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 700;
+      border: none;
+      border-radius: 6px;
+      padding: 0.7rem 2.2rem;
+      font-size: 1.08rem;
+      cursor: pointer;
+      margin-bottom: 0.8rem;
+      transition: background 0.2s;
+      box-shadow: 0 1px 5px rgba(255,183,0,0.09);
+    }
+    #confirm-btn:hover {
+      background: #ffc94d;
+    }
+    .confirmation-message {
+      display: none;
+      background: #e8fff2;
+      color: var(--success);
+      border: 1px solid #b7f2d2;
+      border-radius: 8px;
+      padding: 1.2rem 1rem;
+      text-align: center;
+      font-size: 1.1rem;
+      margin-top: 1rem;
+      margin-bottom: 1.2rem;
+      font-family: 'Montserrat', Arial, sans-serif;
+      animation: fadeIn .5s;
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform: scale(0.95);}
+      to { opacity:1; transform: scale(1);}
+    }
+    .payment-instructions {
+      display: none;
+      background: #f8f8ff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem 1rem;
+      font-size: 1.05rem;
+      margin-top: 1rem;
+      color: var(--primary);
+      text-align: left;
+      animation: fadeIn .5s;
+    }
+    .important-note {
+      color: var(--error);
+      margin-top: 1rem;
+      font-size: 1.02rem;
+      font-weight: 700;
+      background: #fff0f0;
+      padding: 0.7rem 1rem;
+      border-radius: 7px;
+      border: 1px solid #f5c4c4;
+    }
+    footer {
+      background: var(--primary);
+      color: #fff;
+      text-align: center;
+      padding: 1.2rem 0 0.6rem 0;
+      font-size: 0.96rem;
+      margin-top: auto;
+      letter-spacing: 0.2px;
+    }
+    .footer-links {
+      margin-bottom: 0.7rem;
+    }
+    .footer-links a {
+      color: #fff;
+      text-decoration: underline;
+      margin: 0 0.9rem;
+      font-size: 1rem;
+      transition: color .2s;
+    }
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+    @media (max-width: 700px) {
+      main {
+        width: 99%;
+        max-width: 99vw;
+        padding: 1rem 0;
+      }
+      .summary-card {
+        padding: 1.1rem 0.6rem 1.15rem 0.6rem;
+        width: 99%;
+        max-width: 99vw;
+      }
+      .customer-info, .instructions, .payment-instructions, .confirmation-message {
+        padding: 0.8rem;
+      }
+    }
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.45rem;
+      }
+      .summary-card {
+        padding: 0.7rem 0.2rem 0.7rem 0.2rem;
+      }
+      .confirmation-message, .payment-instructions {
+        font-size: 0.97rem;
+      }
+      #confirm-btn {
+        padding: 0.6rem 1.3rem;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="image/LOGO.png" alt="Keirion Urban Boutique Logo">
+      <span>Keirion Urban Boutique</span>
+    </div>
+  </header>
+  <main>
+    <h1>Order Review & Confirmation</h1>
+    <div class="summary-card">
+      <div class="summary-header">
+        <h2>Order Summary</h2>
+        <div style="color:var(--accent);margin-bottom:0.5rem;font-weight:700;">Please review your order details before finalizing.</div>
+      </div>
+      <ul class="summary-list" id="order-list">
+        <!-- Order items injected via JS -->
+      </ul>
+      <div class="summary-total" id="order-total">Total: ₱0.00</div>
+      <div class="customer-info" id="customer-details">
+        <div><strong>Name:</strong> <span id="customer-name"></span></div>
+        <div><strong>Contact Number:</strong> <span id="customer-phone"></span></div>
+        <div><strong>Email:</strong> <span id="customer-email"></span></div>
+        <div><strong>Shipping Address:</strong> <span id="customer-address"></span></div>
+        <div><strong>Preferred Payment Method:</strong> <span id="customer-payment"></span></div>
+      </div>
+      <div class="instructions">
+        <ul style="padding-left:1.2em;">
+          <li>After confirming your order, our boutique team will reach out to you directly to verify product colors, check availability, and clarify any other details.</li>
+          <li>Please respond to our message to confirm your choices.</li>
+          <li>Once all details are finalized, you will receive a secure payment link based on your selected payment method.</li>
+          <li>Complete your payment within <strong>24 hours</strong> to ensure your order is processed without delay.</li>
+        </ul>
+      </div>
+      <div class="confirm-section">
+        <button id="confirm-btn" type="button">Confirm & Submit Order</button>
+        <div class="confirmation-message" id="confirmation-message">
+          <span style="font-size:1.25em;">Thank you! Your order has been submitted.</span><br>
+          One of our team members will contact you soon to confirm your order details.<br>
+          Please verify your choices and respond promptly to proceed.<br>
+        </div>
+        <div class="payment-instructions" id="payment-instructions">
+          <strong>Next Steps:</strong><br>
+          After confirming your order details, you will receive a payment link via your chosen method.
+          <ul style="padding-left:1.2em;">
+            <li>Follow the link to complete payment.</li>
+            <li>Payments must be made within <strong>24 hours</strong> to avoid automatic cancellation.</li>
+            <li>Should you need assistance, please contact our team for help.</li>
+          </ul>
+          <div class="important-note">
+            Kindly note: Orders that remain unpaid after 24 hours from payment link delivery will be cancelled automatically. We appreciate your understanding!
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="footer-links">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="refund-policy.html">Refund Policy</a>
+    </div>
+    <div>
+      &copy; 2025 Keirion Urban Boutique. All rights reserved.<br>
+      Designed for Meta Business Verification & Philippine urban lifestyle.
+    </div>
+  </footer>
+  <script>
+    // Example order data and customer info for demonstration.
+    // In a real app, this should be replaced with dynamic content from the cart/checkout process.
+    var orderItems = [
+      { name: "Urban Tee - Black", qty: 2, price: 349.00 },
+      { name: "Classic Canvas Cap", qty: 1, price: 229.00 },
+      { name: "Denim Jacket", qty: 1, price: 1199.00 }
+    ];
+    var customer = {
+      name: "Juan Dela Cruz",
+      phone: "+63 912 345 6789",
+      email: "juan.delacruz@email.com",
+      address: "123 Sampaguita St., Barangay San Isidro, Parañaque City, NCR, 1700, Philippines",
+      payment: "GCash"
+    };
+
+    function renderOrderSummary() {
+      var list = document.getElementById('order-list');
+      var total = 0;
+      list.innerHTML = '';
+      orderItems.forEach(function(item){
+        var li = document.createElement('li');
+        li.innerHTML = '<span>'+item.name+' <span style="color:#888;">(x'+item.qty+')</span></span><span>₱'+(item.price*item.qty).toFixed(2)+'</span>';
+        list.appendChild(li);
+        total += item.price * item.qty;
+      });
+      document.getElementById('order-total').innerText = 'Total: ₱'+ total.toFixed(2);
+    }
+    function renderCustomerInfo() {
+      document.getElementById('customer-name').innerText = customer.name;
+      document.getElementById('customer-phone').innerText = customer.phone;
+      document.getElementById('customer-email').innerText = customer.email;
+      document.getElementById('customer-address').innerText = customer.address;
+      document.getElementById('customer-payment').innerText = customer.payment;
+    }
+    renderOrderSummary();
+    renderCustomerInfo();
+
+    // Confirmation logic
+    document.getElementById('confirm-btn').addEventListener('click', function() {
+      var confirmMsg = document.getElementById('confirmation-message');
+      var paymentMsg = document.getElementById('payment-instructions');
+      confirmMsg.style.display = 'block';
+      setTimeout(function(){
+        paymentMsg.style.display = 'block';
+      }, 1200);
+      this.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
